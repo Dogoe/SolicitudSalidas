@@ -6,8 +6,8 @@
 <head runat="server">
     <title>Solicitud de Salida</title>
     <meta name= "viewport" content="width=device-width, user-scalable=no, initial-scale=1.0"/>
-    <link rel="stylesheet" href="Resources/bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="Resources/estilos.css"/>
+    <link rel="stylesheet" href="../CSS/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../VistasUsuario/css/estilos.css"/>
 </head>
 <body>
     <header>
@@ -15,14 +15,14 @@
         <!--Banner de la UABC-->
         <div class="row">
             <div class="hidden-xs hidden-sm col-md-2 col-lg-2">
-                <img src="Resources/img/logouabc.png" height="110"/>
+                <img src="../Imagenes/logouabc.png" height="110"/>
             </div>
             <div class="col-sm-8 col-md-8 col-lg-8">
                 <h1 class="uabc">Universidad Autónoma de Baja California</h1>
                 <h3 class="facultad">Facultad de Ingeniería, Arquitectura y Diseño</h3>
             </div>
             <div class="hidden-xs hidden-sm col-md-2 col-lg-2">
-                <img src="Resources/img/logofiad.png" class="logo"/>
+                <img src="../Imagenes/logofiad.png" height="110" class="logo"/>
             </div>
         </div>				
         <hr />
@@ -73,8 +73,8 @@
     
  
     </div>
-    <script src="Resources/Jquery-3.2.1/js/jquery-3.2.1.min.js"></script>
-    <script src="Resources/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="../Javascrip/jquery-3.2.1.min.js"></script>    
+    <script src="../Javascrip/bootstrap.min.js"></script> 
     <footer>
         <div class="container">
             <div class="row">

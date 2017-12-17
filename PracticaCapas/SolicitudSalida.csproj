@@ -44,6 +44,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="itextsharp, Version=5.5.10.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -66,15 +70,26 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CSS\bootstrap.min.css" />
     <Content Include="DLL\DatosSQL.dll" />
+    <Content Include="DLL\itextsharp.dll" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Imagenes\favicon.PNG" />
+    <Content Include="Imagenes\logofiad.png" />
+    <Content Include="Imagenes\logouabc.png" />
+    <Content Include="Javascrip\bootstrap-notify.min.js" />
+    <Content Include="Javascrip\bootstrap.min.js" />
+    <Content Include="Javascrip\jquery-3.2.1.min.js" />
     <Content Include="packages.config" />
-    <Content Include="VistasUsuario\GenerarSolicitud.aspx" />
-    <Content Include="VistasUsuario\HistorialSolicitudes.aspx" />
     <Content Include="VistasUsuario\Inicio.aspx" />
     <Content Include="VistasUsuario\js\Solicitudes.js" />
     <Content Include="VistasUsuario\Notificaciones.aspx" />
     <Content Include="VistasUsuario\Solicitudes.aspx" />
     <Content Include="VistasUsuario\Usuarios.Master" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -84,11 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
-    <Content Include="Resources\estilos.css" />
-    <Content Include="Resources\img\favicon.PNG" />
-    <Content Include="Resources\img\logofiad.png" />
-    <Content Include="Resources\img\logouabc.png" />
-    <Content Include="Resources\Jquery-3.2.1\js\jquery-3.2.1.min.js" />
+    <Content Include="VistasUsuario\css\estilos.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -102,20 +113,6 @@
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VistasUsuario\GenerarSolicitud.aspx.cs">
-      <DependentUpon>GenerarSolicitud.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="VistasUsuario\GenerarSolicitud.aspx.designer.cs">
-      <DependentUpon>GenerarSolicitud.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="VistasUsuario\HistorialSolicitudes.aspx.cs">
-      <DependentUpon>HistorialSolicitudes.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="VistasUsuario\HistorialSolicitudes.aspx.designer.cs">
-      <DependentUpon>HistorialSolicitudes.aspx</DependentUpon>
-    </Compile>
     <Compile Include="VistasUsuario\Inicio.aspx.cs">
       <DependentUpon>Inicio.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -156,9 +153,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="CSS\" />
-    <Folder Include="Imagenes\" />
-    <Folder Include="Javascrip\" />
+    <Folder Include="ReportesSalidas\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

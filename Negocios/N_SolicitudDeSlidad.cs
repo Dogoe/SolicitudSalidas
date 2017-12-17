@@ -155,7 +155,7 @@ namespace Negocios
     }
 	public class N_SolicitudSalidas
 	{
-        //N_EstadoSolicitudSalida nEstado = new N_EstadoSolicitudSalida();
+        N_EstadoSolicitudSalida nEstado = new N_EstadoSolicitudSalida();
         //------------------------
         D_IBM_Datos ObjIBM = new D_IBM_Datos();
 		D_Listados ObjLst = new D_Listados();
@@ -171,57 +171,47 @@ namespace Negocios
 		public DataTable DT_LstSolicitud() { return ObjLst.DT_ListadoGeneral(TB.tbSolicitudSalidas, TB.tbSolicitudSalidasOrdenadoPor); }
 
 		public List<E_SolicitudSalidas> LstSolicitud() { return D_ConvierteDatos.ConvertirDTALista<E_SolicitudSalidas>(DT_LstSolicitud()); }
+        public List<E_SolicitudSalidasJoin> ListSolicitudesSalidaJoin(string accion)
+        {
+            List<DbParameter> LstParametros = new List<DbParameter> { new SqlParameter("@accion", accion) };
+            return D_ConvierteDatos.ConvertirDTALista<E_SolicitudSalidasJoin>(ObjLst.DT_GetListado(SP.LstTodasLasSolicitudes, LstParametros));
+        }
 
-		// Busquedas de la claseSolicitud por diferente Criterios
-		public E_SolicitudSalidas BuscaSolicitudPorId(int pIdSolicitud) { return (from Solicitud in LstSolicitud() where Solicitud.IdSolicitud == pIdSolicitud select Solicitud).FirstOrDefault(); }
-        public List<E_SolicitudSalidas> BuscaSolicitudPorIdProfesor(int pIdProfesor) { return (from Solicitud in LstSolicitud() where Solicitud.IdProfesor == pIdProfesor select Solicitud).ToList(); }
-        public List<E_SolicitudSalidas> BuscaSolicitudPendienteProfesor(int pIdProfesor) { return (from Solicitud in LstSolicitud() where Solicitud.IdProfesor == pIdProfesor where Solicitud.IdEstadoSolicitudSalida != 1 where Solicitud.IdEstadoSolicitudSalida != 5 where Solicitud.IdEstadoSolicitudSalida != 6 select Solicitud).ToList(); }
-        //-----------------Obtener Solicitudes dependiendo del nivel de validacion en el ue se encuentra en usuario
-        //-----------------Validacion Subdirector-------------------------------------------------------------------
-        public List<E_SolicitudSalidas> BuscaSolicitudesPendientesSubdirector() { return (from Solicitud in LstSolicitud() where Solicitud.ValSubdirector == false where Solicitud.ValUnica == false where Solicitud.IdEstadoSolicitudSalida == 1 select Solicitud).ToList(); }
-        //-----------------Validacion Coordinador-------------------------------------------------------------------
-        public List<E_SolicitudSalidas> BuscaSolicitudesPendientesCoordinador() { return (from Solicitud in LstSolicitud() where Solicitud.ValCoordinador == false where Solicitud.ValSubdirector == true where Solicitud.ValUnica == false where Solicitud.IdEstadoSolicitudSalida == 1 select Solicitud).ToList(); }
-        //-----------------Validacion Administrador Academico-------------------------------------------------------
-        public List<E_SolicitudSalidas> BuscaSolicitudesPendientesAdministradorAcademico() { return (from Solicitud in LstSolicitud() where Solicitud.ValAdministradorAcademico == false where Solicitud.ValCoordinador == true where Solicitud.ValUnica == false where Solicitud.IdEstadoSolicitudSalida == 1 select Solicitud).ToList(); }
-        //-----------------Validacion Director----------------------------------------------------------------------
-        public List<E_SolicitudSalidas> BuscaSolicitudesPendientesDirector() { return (from Solicitud in LstSolicitud() where Solicitud.ValDirector == false where Solicitud.ValAdministradorAcademico == true where Solicitud.ValUnica == false where Solicitud.IdEstadoSolicitudSalida == 1 select Solicitud).ToList(); }
-        //-----------------Validacion Posgrado----------------------------------------------------------------------
-        public List<E_SolicitudSalidas> BuscaSolicitudesPendientesPosgrado() { return (from Solicitud in LstSolicitud() where Solicitud.ValPosgrado == false where Solicitud.ValDirector == true where Solicitud.ValUnica == false where Solicitud.IdEstadoSolicitudSalida == 1 select Solicitud).ToList(); }
-        //public List<E_SolicitudSalidas> ListInnerJoinSolicitud() { return (from Solicitud in LstSolicitud() join EstadoSolicitud in nEstado.LstEstadoSolicitudSalida() on Solicitud.IdEstadoSolicitudSalida equals EstadoSolicitud.IdEstadoSolicitudSalida select Solicitud).ToList(); }
-       // List<DbParameter> LstParametros = new List<DbParameter> { new SqlParameter("@accion",accion),};
-        //public DataTable DT_GetListado() { return ObjLst.DT_GetListado(SP.L_SolicitudSalida, DbParameter); }
-        //from contact in DealerContact
-        //join dealer in Dealer on contact.DealerId equals dealer.ID
-        //select contact;
-        //-------------------------------
-        public List<E_SolicitudSalidas> BuscaSolicitudesPendientesValidador(string cargoValidador) {
+        // Busquedas de la claseSolicitud por diferente Criterios
+        public E_SolicitudSalidas BuscaSolicitudPorId(int pIdSolicitud) { return (from Solicitud in LstSolicitud() where Solicitud.IdSolicitud == pIdSolicitud select Solicitud).FirstOrDefault(); }
+        public List<E_SolicitudSalidasJoin> BuscaSolicitudPorIdProfesor(int pIdProfesor) { return (from Solicitud in ListSolicitudesSalidaJoin(Acciones.ConsultarTodo) where Solicitud.IdProfesor == pIdProfesor select Solicitud).ToList(); }
+        public List<E_SolicitudSalidasJoin> BuscaSolicitudPendienteProfesor(int pIdProfesor) { return (from Solicitud in ListSolicitudesSalidaJoin(Acciones.ConsultarTodo) where Solicitud.IdProfesor == pIdProfesor where Solicitud.IdEstadoSolicitudSalida != 1 where Solicitud.IdEstadoSolicitudSalida != 4 where Solicitud.IdEstadoSolicitudSalida != 6 select Solicitud).ToList(); }
+        //----------------
+        //public List<E_SolicitudSalidasJoin> ListSolicitudesSalidaJoin() { return (List<E_SolicitudSalidasJoin>)(from Solicitud in LstSolicitud() join Estado in nEstado.LstEstadoSolicitudSalida() on Solicitud.IdEstadoSolicitudSalida equals Estado.IdEstadoSolicitudSalida select Solicitud); }
+        //Obtener Solicitudes dependiendo del nivel de validacion en el ue se encuentra en usuario
+        public List<E_SolicitudSalidasJoin> BuscaSolicitudesPendientesValidador(string cargoValidador) {
             if (cargoValidador == "Subdirector")
             {
-                return (from Solicitud in LstSolicitud() where Solicitud.ValSubdirector == false where Solicitud.ValUnica == false where Solicitud.IdEstadoSolicitudSalida == 1 select Solicitud).ToList();
+                return (from Solicitud in ListSolicitudesSalidaJoin(Acciones.ConsultarTodo) where Solicitud.ValSubdirector == false where Solicitud.ValUnica == false where Solicitud.IdEstadoSolicitudSalida == 1 select Solicitud).ToList();
             }
             else
             {
                 if (cargoValidador == "Coordinador")
                 {
-                    return (from Solicitud in LstSolicitud() where Solicitud.ValCoordinador == false where Solicitud.ValSubdirector == true where Solicitud.ValUnica == false where Solicitud.IdEstadoSolicitudSalida == 1 select Solicitud).ToList();
+                    return (from Solicitud in ListSolicitudesSalidaJoin(Acciones.ConsultarTodo) where Solicitud.ValCoordinador == false where Solicitud.ValSubdirector == true where Solicitud.ValUnica == false where Solicitud.IdEstadoSolicitudSalida == 1 select Solicitud).ToList();
                 }
                 else
                 {
                     if (cargoValidador == "AdministradorAcademico")
                     {
-                        return (from Solicitud in LstSolicitud() where Solicitud.ValAdministradorAcademico == false where Solicitud.ValCoordinador == true where Solicitud.ValUnica == false where Solicitud.IdEstadoSolicitudSalida == 1 select Solicitud).ToList();
+                        return (from Solicitud in ListSolicitudesSalidaJoin(Acciones.ConsultarTodo) where Solicitud.ValAdministradorAcademico == false where Solicitud.ValCoordinador == true where Solicitud.ValUnica == false where Solicitud.IdEstadoSolicitudSalida == 1 select Solicitud).ToList();
                     }
                     else
                     {
                         if (cargoValidador == "Director")
                         {
-                            return (from Solicitud in LstSolicitud() where Solicitud.ValDirector == false where Solicitud.ValAdministradorAcademico == true where Solicitud.ValUnica == false where Solicitud.IdEstadoSolicitudSalida == 1 select Solicitud).ToList();
+                            return (from Solicitud in ListSolicitudesSalidaJoin(Acciones.ConsultarTodo) where Solicitud.ValDirector == false where Solicitud.ValAdministradorAcademico == true where Solicitud.ValUnica == false where Solicitud.IdEstadoSolicitudSalida == 1 select Solicitud).ToList();
                         }
                         else
                         {
                             if (cargoValidador == "Posgrado")
                             {
-                                return (from Solicitud in LstSolicitud() where Solicitud.ValPosgrado == false where Solicitud.ValDirector == true where Solicitud.ValUnica == false where Solicitud.IdEstadoSolicitudSalida == 1 select Solicitud).ToList();
+                                return (from Solicitud in ListSolicitudesSalidaJoin(Acciones.ConsultarTodo) where Solicitud.ValPosgrado == false where Solicitud.ValDirector == true where Solicitud.ValUnica == false where Solicitud.IdEstadoSolicitudSalida == 1 select Solicitud).ToList();
                             }
                             else
                             {

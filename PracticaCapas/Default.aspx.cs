@@ -24,7 +24,12 @@ namespace PracticaCapas
             }
             else
             {
-                Session["Profesor"] = profesor; 
+                N_Rol nRol = new N_Rol();
+                E_Rol rolUsuario = new E_Rol();
+                rolUsuario = nRol.BuscaRolPorId(profesor.IdRol);
+                Session["Profesor"] = profesor;
+                Session["Rol"] = rolUsuario.NombreRol;
+                Session["Cargo"] = rolUsuario.DescripcionRol;
                 Server.Transfer("~/VistasUsuario/Inicio.aspx", true);
             }
 

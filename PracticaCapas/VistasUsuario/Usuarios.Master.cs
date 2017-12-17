@@ -12,9 +12,14 @@ namespace PracticaCapas.VistasUsuario
     public partial class Usuarios : System.Web.UI.MasterPage
     {
         E_Profesor profesor;
+        string rolProfesor;
+        string cargoPtofesor;
+        //------------
         protected void Page_Load(object sender, EventArgs e)
         {
             profesor = (E_Profesor)Session["Profesor"];
+            rolProfesor = (string)Session["Rol"];
+            cargoPtofesor = (string)Session["Cargo"];
             if (profesor == null)
             {
                 Server.Transfer("~/Default.aspx", true);
@@ -41,14 +46,14 @@ namespace PracticaCapas.VistasUsuario
                 E_Rol rolUsuario = nRol.BuscaRolPorId(profesor.IdRol);
                 //----------------------
                 N_SolicitudSalidas nSolicitudSalidas = new N_SolicitudSalidas();
-                List<E_SolicitudSalidas> datosListaSolPendientesDocente = nSolicitudSalidas.BuscaSolicitudPendienteProfesor(profesor.IdProfesor);
+                List<E_SolicitudSalidasJoin> datosListaSolPendientesDocente = nSolicitudSalidas.BuscaSolicitudPendienteProfesor(profesor.IdProfesor);
                 if (datosListaSolPendientesDocente != null)
                 {
                     contadorSolPendProfesor = datosListaSolPendientesDocente.Count;
                 }
 
                 //--------------------
-                List<E_SolicitudSalidas> datosListaSolPendientesValidador = nSolicitudSalidas.BuscaSolicitudesPendientesValidador(rolUsuario.DescripcionRol);
+                List<E_SolicitudSalidasJoin> datosListaSolPendientesValidador = nSolicitudSalidas.BuscaSolicitudesPendientesValidador(rolUsuario.DescripcionRol);
                 if (datosListaSolPendientesValidador != null)
                 {
                     contadorSolPenValidador = datosListaSolPendientesValidador.Count;
@@ -63,13 +68,12 @@ namespace PracticaCapas.VistasUsuario
           
 
         }
-       /* public void Cerrar_Session()
+        //--------------
+        public void Mostrar_Notificacion(string msj, string TipoColor)
         {
-            
-             Session.Abandon();
-             Response.Cookies.Add(new HttpCookie("ASP.NET_SessionId", ""));
-            
-        }*/
+            string script = string.Format("Notificaciones({0},{1});", msj, TipoColor);
+            ScriptManager.RegisterStartupScript(Page, Page.ClientScript.GetType(), "mostrarNotificacion", script, true);
+        }
 
     }
 }

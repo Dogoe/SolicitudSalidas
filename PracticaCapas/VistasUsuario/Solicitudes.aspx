@@ -1,10 +1,14 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/VistasUsuario/Usuarios.Master" AutoEventWireup="true" CodeBehind="Solicitudes.aspx.cs" Inherits="PracticaCapas.VistasUsuario.Solicitudes" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <script src="../Javascrip/jquery-3.2.1.min.js"></script>    
+    <script src="../Javascrip/bootstrap.min.js"></script> 
+    <script src="../Javascrip/bootstrap-notify.min.js"></script> 
+    <script src="../VistasUsuario/js/Solicitudes.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder" runat="server">
     <form id="formSolicitudesRealizadas" runat="server"> 
         <h3>Generar Nueva Solicitud</h3>
-        <button id="btnNuevaSolicitud" data-toggle="modal" data-target="#SolicitudesAgregarEditarModal" class="btn btn-info  glyphicon glyphicon-plus"></button>
+        <asp:LinkButton data-toggle="tooltip" data-placement="right" title="Generar Nueva Solicitud" ID="linkButtonNuevaSol" runat="server" CssClass="btn btn-info  glyphicon glyphicon-plus" OnClick="NuevaSolicitudClick"> </asp:LinkButton>
         <h2>Historial de Solicitudes</h2>
         <asp:HiddenField ID="TABSeleccionada" runat="server" Value="docente" />
         <ul id="tabSolicitudesPendientes"  class="nav nav-tabs">
@@ -19,46 +23,7 @@
                 <asp:GridView ID="gvMisSolicitudes" CssClass="table table-responsive table-bordered table-striped"
                     runat="server" OnPageIndexChanging="gvMisSolicitudes_PageIndexChanging" AllowPaging="True" PageSize="6" AutoGenerateColumns="false" OnRowCommand="gvMisSolicitudes_RowCommand">
                     <Columns>
-                        <asp:TemplateField HeaderText="IdProfesor" ItemStyle-CssClass="control-label">
-                            <ItemTemplate>
-                                <small>
-                                    <asp:Label Text='<%# Eval("IdProfesor") %>' runat="server" CssClass="control-label" /></small>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="NombreEvento" ItemStyle-Width="" ItemStyle-CssClass="control-label">
-                            <ItemTemplate>
-                                <small>
-                                    <asp:Label Text='<%# Eval("NombreEvento") %>' runat="server" CssClass="control-label" /></small>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="FechaCreacion" ItemStyle-Width="" ItemStyle-CssClass="Carrera control-label">
-                            <ItemTemplate>
-                                <small>
-                                    <asp:Label Text='<%# Eval("FechaCreacion") %>' runat="server" /></small>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="IdPeriodo" ItemStyle-CssClass="Correo control-label">
-                            <ItemTemplate>
-                                <small>
-                                    <asp:Label Text='<%# Eval("IdPeriodo") %>' runat="server" CssClass="control-label" /></small>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField>
-                            <ItemTemplate>
-                                <button type="button" class="btn btn-primary btn-xs glyphicon glyphicon-pencil"></button>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                    </Columns>
-                </asp:GridView>
-                <i>Estas viendo <%=gvMisSolicitudes.PageIndex + 1%> de <%=gvMisSolicitudes.PageCount%> Registros</i>
-            </div>
-            <div id="administrador" class="tab-pane fade">
-                <h3>Todas las Solicitudes</h3>
-                <asp:Label ID="Label1" Text="" runat="server" />
-                <asp:GridView ID="gvTodasLasSolicitudes" CssClass="table table-responsive table-bordered table-striped"
-                    runat="server" OnPageIndexChanging="gvTodasLasSolicitudes_PageIndexChanging" AllowPaging="True" PageSize="6" AutoGenerateColumns="false" OnRowCommand="gvTodasLasSolicitudes_RowCommand">
-                    <Columns>
-                        <asp:TemplateField> 
+                       <asp:TemplateField> 
                             <ItemTemplate>
                                     <asp:HiddenField ID="IdSolicitud" Value='<%# Eval("IdSolicitud") %>' runat="server" />
                             </ItemTemplate>
@@ -69,27 +34,87 @@
                                     <asp:Label Text='<%# Eval("Folio") %>' runat="server" CssClass="control-label" /></small>
                             </ItemTemplate>
                         </asp:TemplateField>
+                        
+                        <asp:TemplateField HeaderText="Periodo" ItemStyle-CssClass="control-label">
+                            <ItemTemplate>
+                                <small>
+                                    <asp:Label Text='<%# Eval("CicloPeriodo") %>' runat="server" CssClass="control-label" /></small>
+                            </ItemTemplate>
+                        </asp:TemplateField>
                         <asp:TemplateField HeaderText="Nombre del evento" ItemStyle-Width="" ItemStyle-CssClass="control-label">
                             <ItemTemplate>
                                 <small>
                                     <asp:Label Text='<%# Eval("NombreEvento") %>' runat="server" CssClass="control-label" /></small>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Fecha de salida" ItemStyle-Width="" ItemStyle-CssClass="Carrera control-label">
+                        <asp:TemplateField HeaderText="Fecha de salida" ItemStyle-Width="" ItemStyle-CssClass="control-label">
                             <ItemTemplate>
                                 <small>
                                     <asp:Label Text='<%# Eval("FechaHoraSalida") %>' runat="server" /></small>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Estado" ItemStyle-CssClass="Correo control-label">
+                        <asp:TemplateField HeaderText="Estado" ItemStyle-CssClass="control-label">
                             <ItemTemplate>
                                 <small>
-                                    <asp:Label Text='<%# Eval("IdEstadoSolicitudSalida") %>' runat="server" CssClass="control-label" /></small>
+                                    <asp:Label Text='<%# Eval("DescripcionEstado") %>' runat="server" CssClass="control-label" /></small>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField>
+                            <ItemTemplate>
+                                <asp:LinkButton data-toggle="tooltip" data-placement="right" title="Consultar Solicitud" ID="linkButonConsultarSol" class="btn btn-default btn-xs glyphicon glyphicon-eye-open" runat="server" CommandName="Consultar" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"> </asp:LinkButton>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                    </Columns>
+                </asp:GridView>
+                <i>Estas viendo <%=gvMisSolicitudes.PageIndex + 1%> de <%=gvMisSolicitudes.PageCount%> Registros</i>
+            </div>
+            <div id="administrador" class="tab-pane fade">
+                <h3>Todas las Solicitudes</h3>
+               
+                <asp:GridView ID="gvTodasLasSolicitudes" CssClass="table table-responsive table-bordered table-striped"
+                    runat="server" OnPageIndexChanging="gvTodasLasSolicitudes_PageIndexChanging" AllowPaging="True" PageSize="6" AutoGenerateColumns="false" OnRowCommand="gvTodasLasSolicitudes_RowCommand"
+                    >
+                    <Columns>
+                       <asp:TemplateField> 
+                            <ItemTemplate>
+                                    <asp:HiddenField ID="IdSolicitud" Value='<%# Eval("IdSolicitud") %>' runat="server" />
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Folio" ItemStyle-CssClass="control-label">
+                            <ItemTemplate>
+                                <small>
+                                    <asp:Label Text='<%# Eval("Folio") %>' runat="server" CssClass="control-label" /></small>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        
+                        <asp:TemplateField HeaderText="Periodo" ItemStyle-CssClass="control-label">
+                            <ItemTemplate>
+                                <small>
+                                    <asp:Label Text='<%# Eval("CicloPeriodo") %>' runat="server" CssClass="control-label" /></small>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Nombre del evento" ItemStyle-Width="" ItemStyle-CssClass="control-label">
+                            <ItemTemplate>
+                                <small>
+                                    <asp:Label Text='<%# Eval("NombreEvento") %>' runat="server" CssClass="control-label" /></small>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Fecha de salida" ItemStyle-Width="" ItemStyle-CssClass="control-label">
+                            <ItemTemplate>
+                                <small>
+                                    <asp:Label Text='<%# Eval("FechaHoraSalida") %>' runat="server" /></small>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Estado" ItemStyle-CssClass="control-label">
+                            <ItemTemplate>
+                                <small>
+                                    <asp:Label Text='<%# Eval("DescripcionEstado") %>' runat="server" CssClass="control-label" /></small>
                             </ItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="Acciones" ItemStyle-Width="130px">
                             <ItemTemplate>
                                 <asp:LinkButton data-toggle="tooltip" data-placement="right" title="Consultar Solicitud" ID="linkButonConsultarSol" class="btn btn-default btn-xs glyphicon glyphicon-eye-open" runat="server" CommandName="Consultar" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"> </asp:LinkButton>
+                                <asp:LinkButton data-toggle="tooltip" data-placement="right" title="Generar Oficio Comision" ID="linkButonGenerarOficio" class="btn btn-default btn-xs glyphicon glyphicon-paste" runat="server" CommandName="GenerarOficio" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"> </asp:LinkButton>
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>
@@ -104,7 +129,7 @@
     
     </div>
         <!-- Modal -->
-        <div id="SolicitudesAgregarEditarModal" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
+        <div id="ModalModificarConsultarSolicitud" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
             <div id="mdialTamanio" class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
@@ -113,6 +138,7 @@
                         <h4 class="modal-title">Solicitud</h4>
                     </div>
                     <!--Informacion de solicitud-->
+                    <asp:HiddenField ID="idSolEnModal" runat="server" />
                     <div class="container">
                         <div class="row">
                             <div class="col-md-6 col-lg-6">
@@ -305,7 +331,7 @@
 
 
                     <div class="modal-footer">
-                        <asp:Button ID="btnEnviarSolicitud" OnClick="Enviar_Solicitud_Click" Text="Enviar" runat="server" type="submit" CssClass="btn btn-success" />
+                        <asp:Button ID="btnEnviarSolicitud" OnClick="Enviar_Solicitud_Click" Text="Enviar" runat="server" CssClass="btn btn-success" />
                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     </div>
                 </div>

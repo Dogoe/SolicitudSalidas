@@ -1,0 +1,46 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 1.5em;
+}
+
+/*----------------------------------------------*/
+#mdialTamanio {
+    width: 80% !important;
+}
+
+
+/*    --------------------------------------------------
+    :: Footer
+    -------------------------------------------------- */
+
+#footer {
+    color: #6d6d6d;
+    font-size: 15px;
+    text-align: center;
+}
+
+    #footer p {
+        margin-bottom: 0;
+    }
+
+.inicio {
+    position: fixed;
+    margin-left: 23%;
+    margin-bottom: 100%;
+}
+
+.uabc {
+    color: #017141;
+}
+
+.facultad {
+    color: #017141;
+}
+
+.logo {
+    height: 110px;
+}

@@ -1,8 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/VistasUsuario/Usuarios.Master" AutoEventWireup="true" CodeBehind="Notificaciones.aspx.cs" Inherits="PracticaCapas.VistasUsuario.Notificaciones" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
-    <script src="../Resources/Jquery-3.2.1/js/jquery-3.2.1.min.js"></script>
-    <script src="../Resources/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="../Javascrip/jquery-3.2.1.min.js"></script>    
+    <script src="../Javascrip/bootstrap.min.js"></script> 
+    <script src="../Javascrip/bootstrap-notify.min.js"></script> 
     <script src="../VistasUsuario/js/Solicitudes.js"></script>
 
 </asp:Content>
@@ -24,7 +25,7 @@
 
                 <asp:GridView ID="gvSolicitudesPendientesDocente" CssClass="table table-responsive table-bordered table-striped"
                     runat="server" OnPageIndexChanging="gvSolicitudesPendientesDocente_PageIndexChanging" AllowPaging="True" PageSize="6" 
-                    AutoGenerateColumns="false" OnRowCommand="gvSolicitudesPendientesDocente_RowCommand">
+                    AutoGenerateColumns="false" OnRowCommand="gvSolicitudesPendientesDocente_RowCommand" OnRowDataBound="gvSolicitudesPendientesDocente_RowDataBound">
                     <Columns>
                         <asp:TemplateField> 
                             <ItemTemplate>
@@ -37,22 +38,28 @@
                                     <asp:Label Text='<%# Eval("Folio") %>' runat="server" CssClass="control-label" /></small>
                             </ItemTemplate>
                         </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Periodo" ItemStyle-CssClass="control-label">
+                            <ItemTemplate>
+                                <small>
+                                    <asp:Label Text='<%# Eval("CicloPeriodo") %>' runat="server" CssClass="control-label" /></small>
+                            </ItemTemplate>
+                        </asp:TemplateField>
                         <asp:TemplateField HeaderText="Nombre del evento" ItemStyle-Width="" ItemStyle-CssClass="control-label">
                             <ItemTemplate>
                                 <small>
                                     <asp:Label Text='<%# Eval("NombreEvento") %>' runat="server" CssClass="control-label" /></small>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Fecha de salida" ItemStyle-Width="" ItemStyle-CssClass="Carrera control-label">
+                        <asp:TemplateField HeaderText="Fecha de salida" ItemStyle-Width="" ItemStyle-CssClass="control-label">
                             <ItemTemplate>
                                 <small>
                                     <asp:Label Text='<%# Eval("FechaHoraSalida") %>' runat="server" /></small>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Estado" ItemStyle-CssClass="Correo control-label">
+                        <asp:TemplateField HeaderText="Estado" ItemStyle-CssClass="control-label">
                             <ItemTemplate>
                                 <small>
-                                    <asp:Label Text='<%# Eval("IdEstadoSolicitudSalida") %>' runat="server" CssClass="control-label" /></small>
+                                    <asp:Label ID="lblDescripcionEstado" Text='<%# Eval("DescripcionEstado") %>' runat="server" CssClass="control-label" /></small>
                             </ItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="Acciones" ItemStyle-Width="130px">
@@ -61,6 +68,7 @@
                                 <asp:LinkButton data-toggle="tooltip" data-placement="right" title="Consultar Solicitud" ID="linkButonConsultarSol" class="btn btn-default btn-xs glyphicon glyphicon-eye-open" runat="server" CommandName="Consultar" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"> </asp:LinkButton>
                                 <asp:LinkButton data-toggle="tooltip" data-placement="right" title="Editar Solicitud" ID="linkButonEditarSol" class="btn btn-primary btn-xs glyphicon glyphicon-pencil" runat="server" CommandName="Editar" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"> </asp:LinkButton>
                                 <asp:LinkButton data-toggle="tooltip" data-placement="right" title="Subir Reporte de Salida" ID="linkButonSubirReporte" class="btn btn-default btn-xs glyphicon glyphicon-save-file" runat="server" CommandName="SubirReporte" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"> </asp:LinkButton>
+                                
                                 
                             </ItemTemplate>
                         </asp:TemplateField>
@@ -87,22 +95,29 @@
                                     <asp:Label Text='<%# Eval("Folio") %>' runat="server" CssClass="control-label" /></small>
                             </ItemTemplate>
                         </asp:TemplateField>
+                        
+                        <asp:TemplateField HeaderText="Periodo" ItemStyle-CssClass="control-label">
+                            <ItemTemplate>
+                                <small>
+                                    <asp:Label Text='<%# Eval("CicloPeriodo") %>' runat="server" CssClass="control-label" /></small>
+                            </ItemTemplate>
+                        </asp:TemplateField>
                         <asp:TemplateField HeaderText="Nombre del evento" ItemStyle-Width="" ItemStyle-CssClass="control-label">
                             <ItemTemplate>
                                 <small>
                                     <asp:Label Text='<%# Eval("NombreEvento") %>' runat="server" CssClass="control-label" /></small>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Fecha de salida" ItemStyle-Width="" ItemStyle-CssClass="Carrera control-label">
+                        <asp:TemplateField HeaderText="Fecha de salida" ItemStyle-Width="" ItemStyle-CssClass="control-label">
                             <ItemTemplate>
                                 <small>
                                     <asp:Label Text='<%# Eval("FechaHoraSalida") %>' runat="server" /></small>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Estado" ItemStyle-CssClass="Correo control-label">
+                        <asp:TemplateField HeaderText="Estado" ItemStyle-CssClass="control-label">
                             <ItemTemplate>
                                 <small>
-                                    <asp:Label Text='<%# Eval("IdEstadoSolicitudSalida") %>' runat="server" CssClass="control-label" /></small>
+                                    <asp:Label Text='<%# Eval("DescripcionEstado") %>' runat="server" CssClass="control-label" /></small>
                             </ItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="Acciones" ItemStyle-Width="130px">
@@ -141,6 +156,10 @@
                             <asp:TextBox ID="txtComentarioRechazar" class="form-control" TextMode="multiline" Columns="50" Rows="5" runat="server" />
 
                         </div>
+                        <div class="form-group">
+                             <asp:FileUpload ID="FileUpload" runat="server"/>
+
+                        </div>
                     </div>
 
 
@@ -148,6 +167,7 @@
                         <asp:Button ID="btnAceptarSolicitud" OnClick="btnAceptarSolicitud_Click" Text="Aceptar" runat="server" CssClass="btn btn-success" />
                         <asp:Button ID="btnRechazarSolicitud" OnClick="btnRechazarSolicitud_Click" Text="Rechazar" runat="server" CssClass="btn btn-success" />
                         <asp:Button ID="btnAprobarSolicitud" OnClick="btnAprobarSolicitud_Click" Text="Aprobar" runat="server" CssClass="btn btn-success" />
+                        <asp:Button ID="btnUploadReporte" OnClick="btnUploadReporte_Click" Text="Subir" runat="server" CssClass="btn btn-success" />
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 
                     </div>
@@ -156,7 +176,7 @@
             </div>
         </div>
         <!--Termina Modal Confirmar Aceptar solicitud-->
-     
+        
         
         <!-- Modal ModificarConsultar-->
         <div id="ModalModificarConsultarSolicitud" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
