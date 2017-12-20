@@ -132,7 +132,7 @@ namespace PracticaCapas.VistasUsuario
         protected void gvTodasLasSolicitudes_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             gvTodasLasSolicitudes.PageIndex = e.NewPageIndex;
-            CargarTablaSolicitudes();
+            CargarTablaTodasSolicitudes();
         }
         //----------------------------------------------------------
         protected void gvMisSolicitudes_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -180,69 +180,87 @@ namespace PracticaCapas.VistasUsuario
             }
             if (e.CommandName == "GenerarOficio")
             {
-                E_SolicitudSalidas solicitud = nSolicitudSalidas.BuscaSolicitudPorId(idBuscaSolicitud);
+                nSolicitudSalidas = new N_SolicitudSalidas();
+                E_SolicitudSalidasJoin solicitud = nSolicitudSalidas.BuscaSolicitudPorIdJoin(idBuscaSolicitud);
+                N_Profesor nProfesor = new N_Profesor();
+                E_Profesor profesorSol = nProfesor.BuscaProfesorPorId(solicitud.IdProfesor); 
                 Document doc = new Document(PageSize.LETTER);
                 // Indicamos donde vamos a guardar el documento
                 //PdfWriter writer = PdfWriter.GetInstance(doc,new FileStream(Server.MapPath("~/Resources") + "/prueba.pdf", FileMode.Create));
                 //string nombreArchivo = Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
-                string nombreArchivo = Server.MapPath("~/Resources/") + "OficioC-"+solicitud.FechaCreacion+"-"+solicitud.Folio+".pdf";
+                string nombreArchivo = Server.MapPath("~/OficioComisionSolicitud/") +solicitud.Folio+solicitud.CicloPeriodo+profesorSol.NumeroEmpleado+"OficioC.pdf";
                 PdfWriter writer = PdfWriter.GetInstance(doc,new FileStream(nombreArchivo, FileMode.Create));
-
-               
-                // Le colocamos el título y el autor
-                // **Nota: Esto no será visible en el documento
+                //---------------------
                 doc.AddTitle("Oficio Comision");
-                //doc.AddCreator("Roberto Torres");
-
-                // Abrimos el archivo
+                //------------------
                 doc.Open();
                 //---------------
                 iTextSharp.text.Font _standardFont = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
 
+                Font fuenteTitulo = new Font(iTextSharp.text.Font.FontFamily.HELVETICA,20, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                Font fuenteSubtitulo = new Font(iTextSharp.text.Font.FontFamily.HELVETICA, 14, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
                 // Escribimos el encabezamiento en el documento
-                doc.Add(new Paragraph("Oficio"));
+                //doc.AddHeader("NAME","CONTENIDO");
+                Paragraph tituloOficio = new Paragraph("Universidad Autónoma de Baja California", fuenteTitulo);
+                tituloOficio.Alignment = Element.ALIGN_CENTER;
+                doc.Add(tituloOficio);
+                Paragraph subtituloOficio = new Paragraph("FACULTAD DE INGENIERIA, ARQUITECTURA Y DISEÑO", fuenteSubtitulo);
+                subtituloOficio.Alignment = Element.ALIGN_CENTER;
+                doc.Add(subtituloOficio);
                 doc.Add(Chunk.NEWLINE);
 
-                doc.Add(new Paragraph("Por el siguiente medio me permito solicitar"));
-                // Creamos una tabla que contendrá el nombre, apellido y país
-                // de nuestros visitante.
-                /*PdfPTable tblPrueba = new PdfPTable(3);
-                tblPrueba.WidthPercentage = 100;
+                DateTime diaActual = Convert.ToDateTime(DateTime.Now);
+                Paragraph infoEmision = new Paragraph("SUBDIRECCIÓN\n"
+                            + solicitud.CicloPeriodo+ " ASUNTO: Oficio Comisión\n"+
+                            "Ensenada, B,C, a "+ diaActual, fuenteSubtitulo);
+                infoEmision.Alignment = Element.ALIGN_RIGHT;
+                doc.Add(infoEmision);
+                doc.Add(Chunk.NEWLINE);
+                doc.Add(Chunk.NEWLINE);
 
-                // Configuramos el título de las columnas de la tabla
-                PdfPCell clNombre = new PdfPCell(new Phrase("Nombre", _standardFont));
-                clNombre.BorderWidth = 0;
-                clNombre.BorderWidthBottom = 0.75f;
+                Paragraph encabezado = new Paragraph(profesorSol.APaternoProfesor+" " + profesor.AMaternoProfesor +" "+ profesorSol.NombreProfesor+"\n"
+                   + "No. De empleado: "+profesorSol.NumeroEmpleado,fuenteSubtitulo);
+                encabezado.Alignment = Element.ALIGN_LEFT;
+                doc.Add(encabezado);
+                Paragraph encabezado2 = new Paragraph("PRESENTE",fuenteTitulo);
+                encabezado2.Alignment = Element.ALIGN_LEFT;
+                doc.Add(encabezado2);
+                doc.Add(Chunk.NEWLINE);
 
-                PdfPCell clApellido = new PdfPCell(new Phrase("Apellido", _standardFont));
-                clApellido.BorderWidth = 0;
-                clApellido.BorderWidthBottom = 0.75f;
+                doc.Add(new Paragraph("Por medio del presente la subdirección a mi cargo comisiona a ustede el dia "+diaActual
+                    +" del año en curso"));
+                doc.Add(Chunk.NEWLINE);
 
-                PdfPCell clPais = new PdfPCell(new Phrase("País", _standardFont));
-                clPais.BorderWidth = 0;
-                clPais.BorderWidthBottom = 0.75f;
+                Paragraph motivo = new Paragraph("MOTIVO: Solicitud de Salida",fuenteSubtitulo);
+                motivo.Alignment = Element.ALIGN_LEFT;
+                doc.Add(motivo);
+                doc.Add(Chunk.NEWLINE);
 
-                // Añadimos las celdas a la tabla
-                tblPrueba.AddCell(clNombre);
-                tblPrueba.AddCell(clApellido);
-                tblPrueba.AddCell(clPais);
+                doc.Add(new Paragraph("     Asisimismo, se le solicita entregar a este Dependencia el reporte de actividades o la constancia respectiva" +
+                    "de forma impresa o electrónica"));
+                doc.Add(Chunk.NEWLINE);
+                doc.Add(Chunk.NEWLINE);
 
-                // Llenamos la tabla con información
-                clNombre = new PdfPCell(new Phrase("Roberto", _standardFont));
-                clNombre.BorderWidth = 0;
+                doc.Add(new Paragraph("En espera que reciba de conformidad, me despido de usted con un cordial saludo."));
+                doc.Add(Chunk.NEWLINE);
+                doc.Add(Chunk.NEWLINE);
 
-                clApellido = new PdfPCell(new Phrase("Torres", _standardFont));
-                clApellido.BorderWidth = 0;
+                Paragraph atentamente = new Paragraph("ATENTAMENTE", fuenteTitulo);
+                atentamente.Alignment = Element.ALIGN_CENTER;
+                doc.Add(atentamente);
+                Paragraph atentamente2 = new Paragraph("\"POR LA REALIZACION PLENA DEL HOMBRE\"", fuenteSubtitulo);
+                atentamente2.Alignment = Element.ALIGN_CENTER;
+                doc.Add(atentamente2);
+                doc.Add(Chunk.NEWLINE);
+                doc.Add(Chunk.NEWLINE);
 
-                clPais = new PdfPCell(new Phrase("Puerto Rico", _standardFont));
-                clPais.BorderWidth = 0;
+                Paragraph responable = new Paragraph(profesor.NombreProfesor + " "+profesor.APaternoProfesor +" " + profesor.AMaternoProfesor+"\n"
+                    +cargoProfesor, fuenteTitulo);
+                responable.Alignment = Element.ALIGN_CENTER;
+                doc.Add(responable);
 
-                // Añadimos las celdas a la tabla
-                tblPrueba.AddCell(clNombre);
-                tblPrueba.AddCell(clApellido);
-                tblPrueba.AddCell(clPais);
-                //-------------
-                doc.Add(tblPrueba);*/
+
+                
 
                 doc.Close();
                 writer.Close();
@@ -280,7 +298,7 @@ namespace PracticaCapas.VistasUsuario
             nuevaSolicitud.CostoEvento = (float)Convert.ToDecimal(txtCostoEvento.Text);
             nuevaSolicitud.LugarEvento = txtLugarEvento.Text;
             //---------------------
-            string tempFechaRegreso = txtFechaLLegada.Text + " " + txtHoraLlegada.Text;
+            string tempFechaRegreso = txtFechaRegreso.Text + " " + txtHoraRegreso.Text;
             nuevaSolicitud.FechaHoraRegreso = Convert.ToDateTime(tempFechaRegreso);
             //----------------------
             string tempFechaSalida = txtFechaSalida.Text + " " + txtHoraSalida.Text;
@@ -325,7 +343,17 @@ namespace PracticaCapas.VistasUsuario
             //Se obtiene el profesor de esa solicitud
             N_Profesor nProfesor = new N_Profesor();
             E_Profesor profesorSolicitud = nProfesor.BuscaProfesorPorId(solicitud.IdProfesor);
+            //----------
+            //thisDate1.ToString("MMMM dd, yyyy");
+            //string[] fechaHoraLlegadaArraysolicitud = solicitud.FechaHoraRegreso.ToString().Split(' ');
+            DateTime fechaHoraRegreso = Convert.ToDateTime(solicitud.FechaHoraRegreso.ToString());
+            txtFechaRegreso.Text = fechaHoraRegreso.ToString("yyyy-MM-dd");
+            txtHoraRegreso.Text = fechaHoraRegreso.ToString("HH:ff");
+            //txtFechaLLegada.Text = fechaHoraLlegadaArraysolicitud[0];
             //----------------------------------------
+            DateTime fechaHoraSalida = Convert.ToDateTime(solicitud.FechaHoraSalida.ToString());
+            txtFechaSalida.Text = fechaHoraSalida.ToString("yyyy-MM-dd");
+            txtHoraSalida.Text = fechaHoraSalida.ToString("HH:ff");
             //Se rellenan todos los datos en los campos de la vista
             idSolEnModal.Value = Convert.ToString(solicitud.IdSolicitud);
             txtNombre.Text = profesorSolicitud.NombreProfesor;
@@ -341,13 +369,6 @@ namespace PracticaCapas.VistasUsuario
             txtNombreEvento.Text = solicitud.NombreEvento;
             txtCostoEvento.Text = Convert.ToString(solicitud.CostoEvento);
             txtLugarEvento.Text = solicitud.LugarEvento;
-            //---------------------
-            string[] fechaHoraLlegadaArraysolicitud = solicitud.FechaHoraRegreso.ToString().Split(' ');
-            //string tempFechaRegreso = txtFechaLLegada.Text + " " + txtHoraLlegada.Text;
-            //nuevaSolicitud.FechaHoraRegreso = Convert.ToDateTime(tempFechaRegreso);
-            //----------------------
-            //string tempFechaSalida = txtFechaSalida.Text + " " + txtHoraSalida.Text;
-            //nuevaSolicitud.FechaHoraSalida = Convert.ToDateTime(tempFechaSalida);
             //------------------------
             cBoxHospedaje.Checked = solicitud.Hospedaje;
             txtCantPersonas.Text = Convert.ToString(solicitud.Transporte);
@@ -377,7 +398,10 @@ namespace PracticaCapas.VistasUsuario
                 cBoxViaticos.Enabled = false;
                 cBoxOficioComision.Enabled = false;
                 txtRecursoSolicitadoOtro.ReadOnly = true;
-                //btnEditarSol.Visible = false;
+                txtFechaSalida.ReadOnly = true;
+                txtHoraSalida.ReadOnly = true;
+                txtFechaRegreso.ReadOnly = true;
+                txtHoraRegreso.ReadOnly = true;
                 btnEnviarSolicitud.Visible = false;
             }
             else
@@ -403,7 +427,10 @@ namespace PracticaCapas.VistasUsuario
                     cBoxViaticos.Enabled = true;
                     cBoxOficioComision.Enabled = true;
                     txtRecursoSolicitadoOtro.ReadOnly = false;
-                    //btnEditarSol.Visible = true;
+                    txtFechaSalida.ReadOnly = false;
+                    txtHoraSalida.ReadOnly = false;
+                    txtFechaRegreso.ReadOnly = false;
+                    txtHoraRegreso.ReadOnly = false;
                     btnEnviarSolicitud.Visible = false;
                 }
             }
@@ -415,6 +442,7 @@ namespace PracticaCapas.VistasUsuario
         //----------------------
         protected void NuevaSolicitudClick(object sender, EventArgs e)
         {
+            //----------
             ddlCarrera.Enabled = true;
             ddlPeriodo.Enabled = true;
             cBoxActividadCACEI.Enabled = true;
@@ -432,11 +460,16 @@ namespace PracticaCapas.VistasUsuario
             cBoxViaticos.Enabled = true;
             cBoxOficioComision.Enabled = true;
             txtRecursoSolicitadoOtro.ReadOnly = false;
-            //btnEditarSol.Visible = true;
+            txtFechaSalida.ReadOnly = false;
+            txtHoraSalida.ReadOnly = false;
+            txtFechaRegreso.ReadOnly = false;
+            txtHoraRegreso.ReadOnly = false;
             btnEnviarSolicitud.Visible = false;
             //-----------------------
-            //ddlCarrera.SelectedValue = 0;
-            //ddlPeriodo.;
+            txtFechaSalida.Text = "";
+            txtFechaRegreso.Text = "";
+            txtHoraSalida.Text = "";
+            txtHoraRegreso.Text = "";
             txtNombre.Text = "";
             txtNoEmpleado.Text = "";
             cBoxActividadCACEI.Checked = false;
@@ -454,7 +487,10 @@ namespace PracticaCapas.VistasUsuario
             cBoxViaticos.Checked = false;
             cBoxOficioComision.Checked = false;
             txtRecursoSolicitadoOtro.Text = "";
-            //btnEditarSol.Visible = false;
+            txtFechaSalida.Text = "";
+            txtHoraSalida.Text = "";
+            txtFechaRegreso.Text = "";
+            txtHoraRegreso.Text = "";
             btnEnviarSolicitud.Visible = true;
             //---------------------
             txtNombre.Text = profesor.NombreProfesor;

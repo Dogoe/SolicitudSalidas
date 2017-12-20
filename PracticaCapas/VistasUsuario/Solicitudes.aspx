@@ -72,8 +72,8 @@
                 <h3>Todas las Solicitudes</h3>
                
                 <asp:GridView ID="gvTodasLasSolicitudes" CssClass="table table-responsive table-bordered table-striped"
-                    runat="server" OnPageIndexChanging="gvTodasLasSolicitudes_PageIndexChanging" AllowPaging="True" PageSize="6" AutoGenerateColumns="false" OnRowCommand="gvTodasLasSolicitudes_RowCommand"
-                    >
+                    runat="server" OnPageIndexChanging="gvTodasLasSolicitudes_PageIndexChanging" 
+                    AllowPaging="True" PageSize="5" AutoGenerateColumns="false" OnRowCommand="gvTodasLasSolicitudes_RowCommand">
                     <Columns>
                        <asp:TemplateField> 
                             <ItemTemplate>
@@ -189,7 +189,7 @@
                         <div class="row">
                             <div class="col-md-3 col-lg-3">
                                 <div class="form-group">
-                                    <label for="fecha">Fecha de Salida*</label>
+                                    <label for="Periodo">Fecha de Salida*</label>
                                     <asp:TextBox ID="txtFechaSalida" runat="server" class="form-control" type="date" required="true"> </asp:TextBox>
                                     <div class="alert alert-danger" style="display: none">Fecha de salida no válida</div>
 
@@ -198,26 +198,26 @@
 
                             <div class="col-md-3 col-lg-3">
                                 <div class="form-group">
-                                    <label for="fecha">Hora de Salida*</label>
-                                    <asp:TextBox ID="txtHoraSalida" runat="server" class="form-control" type="time" required="true"> </asp:TextBox>
+                                    <label for="Periodo">Hora de Salida(HH:mm - Ej. 22:05)*</label>
+                                    <asp:TextBox ID="txtHoraSalida" runat="server" class="form-control" required="true"> </asp:TextBox>
                                     <div class="alert alert-danger" style="display: none">Hora de salida no válida </div>
 
                                 </div>
                             </div>
                             <div class="col-md-3 col-lg-3">
                                 <div class="form-group">
-                                    <label for="fecha">Fecha de Llegada*</label>
-                                    <asp:TextBox ID="txtFechaLLegada" runat="server" class="form-control" type="date" required="true"> </asp:TextBox>
-                                    <div class="alert alert-danger" style="display: none">Fecha de llegada no válida</div>
+                                    <label for="Periodo">Fecha de Regreso*</label>
+                                    <asp:TextBox ID="txtFechaRegreso" runat="server" class="form-control" type="date"  required="true"> </asp:TextBox>
+                                    <div class="alert alert-danger" style="display: none">Fecha de regreso no válida</div>
 
                                 </div>
                             </div>
 
                             <div class="col-md-3 col-lg-3">
                                 <div class="form-group">
-                                    <label for="fecha">Hora de Llegada*</label>
-                                    <asp:TextBox ID="txtHoraLlegada" runat="server" class="form-control" type="time" required="true"> </asp:TextBox>
-                                    <div class="alert alert-danger" style="display: none">Hora de llegada no válida </div>
+                                    <label>Hora de Regreso(HH:mm - Ej. 22:05)*</label>
+                                    <asp:TextBox ID="txtHoraRegreso" runat="server" class="form-control" required="true"> </asp:TextBox>
+                                    <div class="alert alert-danger" style="display: none">Hora de Regreso no válida </div>
 
                                 </div>
                             </div>
@@ -248,14 +248,8 @@
 
                                     </div>
                                     <div class="form-group">
-                                        <label class="checkbox-inline">
-                                            <asp:CheckBox value="true" ID="cBoxOtro" runat="server" />Otro
-                                        </label>
-
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Descripci&oacute;n otros</label>
-                                        <asp:TextBox ID="txtRecursoSolicitadoOtro" runat="server" class="form-control" type="text" placeholder="Otros ..." required="true"> </asp:TextBox>
+                                        <label>Descripci&oacute;n otros Recursos(Opcional)</label>
+                                        <asp:TextBox ID="txtRecursoSolicitadoOtro" runat="server" class="form-control" type="text" placeholder="Otros ..."> </asp:TextBox>
 
                                     </div>
 
@@ -314,14 +308,8 @@
 
                                 </div>
                                 <div class="form-group">
-                                    <label class="checkbox-inline">
-                                        <asp:CheckBox value="true" ID="cBoxActividadOtro" runat="server" />Otro
-                                    </label>
-
-                                </div>
-                                <div class="form-group">
-                                    <label>Descripci&oacute;n otros</label>
-                                    <asp:TextBox ID="txtActividadOtros" runat="server" class="form-control" type="text" placeholder="Otros ..." required="true"> </asp:TextBox>
+                                    <label>Descripci&oacute;n otras Actividades(Opcional)</label>
+                                    <asp:TextBox ID="txtActividadOtros" runat="server" class="form-control" type="text" placeholder="Otros ..."> </asp:TextBox>
                                 </div>
 
                             </div>

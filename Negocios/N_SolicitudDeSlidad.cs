@@ -179,6 +179,8 @@ namespace Negocios
 
         // Busquedas de la claseSolicitud por diferente Criterios
         public E_SolicitudSalidas BuscaSolicitudPorId(int pIdSolicitud) { return (from Solicitud in LstSolicitud() where Solicitud.IdSolicitud == pIdSolicitud select Solicitud).FirstOrDefault(); }
+        // Busca solicitudes inerjoin
+        public E_SolicitudSalidasJoin BuscaSolicitudPorIdJoin(int pIdSolicitud) { return (from Solicitud in ListSolicitudesSalidaJoin(Acciones.ConsultarTodo) where Solicitud.IdSolicitud == pIdSolicitud select Solicitud).FirstOrDefault(); }
         public List<E_SolicitudSalidasJoin> BuscaSolicitudPorIdProfesor(int pIdProfesor) { return (from Solicitud in ListSolicitudesSalidaJoin(Acciones.ConsultarTodo) where Solicitud.IdProfesor == pIdProfesor select Solicitud).ToList(); }
         public List<E_SolicitudSalidasJoin> BuscaSolicitudPendienteProfesor(int pIdProfesor) { return (from Solicitud in ListSolicitudesSalidaJoin(Acciones.ConsultarTodo) where Solicitud.IdProfesor == pIdProfesor where Solicitud.IdEstadoSolicitudSalida != 1 where Solicitud.IdEstadoSolicitudSalida != 4 where Solicitud.IdEstadoSolicitudSalida != 6 select Solicitud).ToList(); }
         //----------------

@@ -153,6 +153,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="OficioComisionSolicitud\" />
     <Folder Include="ReportesSalidas\" />
   </ItemGroup>
   <PropertyGroup>

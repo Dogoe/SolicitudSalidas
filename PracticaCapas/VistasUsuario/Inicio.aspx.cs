@@ -14,13 +14,16 @@ namespace PracticaCapas.VistasUsuario
         protected void Page_Load(object sender, EventArgs e)
         {
             profesor = (E_Profesor)Session["Profesor"];
-            if (profesor == null && !IsPostBack)
+            if (profesor == null)
             {
                 Server.Transfer("~/Default.aspx", true);
             }
             else
             {
+                if (!IsPostBack)
+                {
 
+                }
             }
         }
     }

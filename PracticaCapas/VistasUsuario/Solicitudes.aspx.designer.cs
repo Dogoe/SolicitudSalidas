@@ -175,22 +175,22 @@ namespace PracticaCapas.VistasUsuario {
         protected global::System.Web.UI.WebControls.TextBox txtHoraSalida;
         
         /// <summary>
-        /// txtFechaLLegada control.
+        /// txtFechaRegreso control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFechaLLegada;
+        protected global::System.Web.UI.WebControls.TextBox txtFechaRegreso;
         
         /// <summary>
-        /// txtHoraLlegada control.
+        /// txtHoraRegreso control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtHoraLlegada;
+        protected global::System.Web.UI.WebControls.TextBox txtHoraRegreso;
         
         /// <summary>
         /// cBoxHospedaje control.
@@ -218,15 +218,6 @@ namespace PracticaCapas.VistasUsuario {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cBoxOficioComision;
-        
-        /// <summary>
-        /// cBoxOtro control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cBoxOtro;
         
         /// <summary>
         /// txtRecursoSolicitadoOtro control.
@@ -299,15 +290,6 @@ namespace PracticaCapas.VistasUsuario {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cBoxActividadPosgrado;
-        
-        /// <summary>
-        /// cBoxActividadOtro control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cBoxActividadOtro;
         
         /// <summary>
         /// txtActividadOtros control.

@@ -257,7 +257,17 @@ namespace PracticaCapas.VistasUsuario
             //Se obtiene el profesor de esa solicitud
             N_Profesor nProfesor = new N_Profesor();
             E_Profesor profesorSolicitud = nProfesor.BuscaProfesorPorId(solicitud.IdProfesor);
+            //----------
+            //thisDate1.ToString("MMMM dd, yyyy");
+            //string[] fechaHoraLlegadaArraysolicitud = solicitud.FechaHoraRegreso.ToString().Split(' ');
+            DateTime fechaHoraRegreso = Convert.ToDateTime(solicitud.FechaHoraRegreso.ToString());
+            txtFechaRegreso.Text = fechaHoraRegreso.ToString("yyyy-MM-dd");
+            txtHoraRegreso.Text = fechaHoraRegreso.ToString("HH:ff");
+            //txtFechaLLegada.Text = fechaHoraLlegadaArraysolicitud[0];
             //----------------------------------------
+            DateTime fechaHoraSalida = Convert.ToDateTime(solicitud.FechaHoraSalida.ToString());
+            txtFechaSalida.Text = fechaHoraSalida.ToString("yyyy-MM-dd");
+            txtHoraSalida.Text = fechaHoraSalida.ToString("HH:ff");
             //Se rellenan todos los datos en los campos de la vista
             idSolEnModal.Value = Convert.ToString(solicitud.IdSolicitud);
             txtNombre.Text = profesorSolicitud.NombreProfesor;
@@ -273,13 +283,6 @@ namespace PracticaCapas.VistasUsuario
             txtNombreEvento.Text = solicitud.NombreEvento;
             txtCostoEvento.Text = Convert.ToString(solicitud.CostoEvento);
             txtLugarEvento.Text = solicitud.LugarEvento;
-            //---------------------
-            string[] fechaHoraLlegadaArraysolicitud = solicitud.FechaHoraRegreso.ToString().Split(' ');
-            //string tempFechaRegreso = txtFechaLLegada.Text + " " + txtHoraLlegada.Text;
-            //nuevaSolicitud.FechaHoraRegreso = Convert.ToDateTime(tempFechaRegreso);
-            //----------------------
-            //string tempFechaSalida = txtFechaSalida.Text + " " + txtHoraSalida.Text;
-            //nuevaSolicitud.FechaHoraSalida = Convert.ToDateTime(tempFechaSalida);
             //------------------------
             cBoxHospedaje.Checked = solicitud.Hospedaje;
             txtCantPersonas.Text = Convert.ToString(solicitud.Transporte);
@@ -309,6 +312,10 @@ namespace PracticaCapas.VistasUsuario
                 cBoxViaticos.Enabled = false;
                 cBoxOficioComision.Enabled = false;
                 txtRecursoSolicitadoOtro.ReadOnly = true;
+                txtFechaSalida.ReadOnly = true;
+                txtHoraSalida.ReadOnly = true;
+                txtFechaRegreso.ReadOnly = true;
+                txtHoraRegreso.ReadOnly = true;
                 btnEditarSol.Visible = false;
             }
             else
@@ -334,7 +341,12 @@ namespace PracticaCapas.VistasUsuario
                     cBoxViaticos.Enabled = true;
                     cBoxOficioComision.Enabled = true;
                     txtRecursoSolicitadoOtro.ReadOnly = false;
-                    btnEditarSol.Visible = true;
+                    txtFechaSalida.ReadOnly = false;
+                    txtHoraSalida.ReadOnly = false;
+                    txtFechaRegreso.ReadOnly = false;
+                    txtHoraRegreso.ReadOnly = false;
+                    btnEditarSol.Visible = false;
+                    //thisDate1.ToString("MMMM dd, yyyy");
                 }
             }
 
@@ -568,7 +580,7 @@ namespace PracticaCapas.VistasUsuario
                 solicitudEditar.CostoEvento = (float)Convert.ToDecimal(txtCostoEvento.Text);
                 solicitudEditar.LugarEvento = txtLugarEvento.Text;
                 //---------------------
-                string tempFechaRegreso = txtFechaLLegada.Text + " " + txtHoraLlegada.Text;
+                string tempFechaRegreso = txtFechaRegreso.Text + " " + txtHoraRegreso.Text;
                 solicitudEditar.FechaHoraRegreso = Convert.ToDateTime(tempFechaRegreso);
                 //----------------------
                 string tempFechaSalida = txtFechaSalida.Text + " " + txtHoraSalida.Text;
